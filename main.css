@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: 'poppins', 'serif'; */
+  }
+  
+
+  .container {
+      width: 100%;
+      min-height: 100vh;
+      background-color: #ccc;
+      padding: 0 8%;
+  }
+  
+
+  nav {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 20px 0
+  }
+
+
+  .nav-links {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-between;
+  }
+
+
+  .nav-links a {
+    text-decoration: none;
+    color: #fff;
+    margin-left: 40px;
+}
+
+.nav-links #logout {
+    text-decoration: none;
+    color: #fff;
+    margin-left: 40px;
+}
+
+.nav-links button {
+    background: #fff;
+    color: #000;
+    padding: 8px 30px;
+    border-radius: 4px;
+}
+
+
+.nav-links .btn {
+    background: #fff;
+    color: #000;
+    padding: 8px 30px;
+    border-radius: 4px;
+
+}
+
+
+.select .btn {
+    background: #fff;
+    color: #000;
+    padding: 8px 30px;
+    border-radius: 4px;
+
+}
+
+
+/* Single Player CSS */
+.grid {
+    width: 90vw;
+    height: 90vh;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: 3fr 7fr;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+
+.grid div {
+    padding: 10px;
+    border: 1px solid black
+}
+
+
+.player1 {
+    grid-column-start: 1;
+    grid-column-end: 4; 
+}
+
+
+.player2 {
+    grid-column-start: 4;
+    grid-column-end: 7; 
+}
+
+
+.player3 {
+    grid-column-start: 7;
+    grid-column-end: 10; 
+}
+
+
+.num-of-dices {
+    width: auto;
+    text-align: center;
+    margin: 15px;
+}
+
+.last-move {
+    margin: 35px 5px 35px 5px;
+}
+
+
+.game-logging {
+    grid-column-start: 10;
+    grid-column-end: 13;
+    grid-row-start: 1;
+    grid-row-end: 3;
+    background-color: white;
+}
+
+
+.main-player {
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+
+.staking-table {
+    grid-column-start: 5;
+    grid-column-end: 10;
+}
+
+/* table-staking grid */
+.grid-table {
+    display: grid;
+    height: 95%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+
+.staking-btn {
+    width: 100%;
+    height: 15%;
+    margin: 1px;
+}
+
+
+.staking-header {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.nickname {
+    text-align: center;
+    margin-bottom: 5px;  
+}
+
+
+/* main player */
+.dices {
+    height: 25%;
+    width: 100%;
+    margin: auto;
+}
+
+
+.dice {
+    background-color: white;
+    width: 19%;
+    height: 95%;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 250%;
+}
+
+
+.decide {
+    margin: 35px 0 35px 0;
+    height: 20%;
+}
+
+
+.decide button {
+    height: 100%;
+    width: 100%;
+}
+
+
+.statement {
+    background-color: white;
+}
+
+.statement h3 {
+    margin: 35px 0 35px 0;
+    text-align: center;
+    color: red;
+}
+
+
+/* game logging */
+.game-logging p {
+    font-weight: bold;
+}
+
+
+.game-logging ul {
+    margin-left: 5%;
+}
+
+
+.game-logging li {
+    font-size: medium;
+    margin: 5px;
+    text-align: center;
+}

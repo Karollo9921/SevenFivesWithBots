@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-links">
+                <div>
+                    <a href="/">Home</a>
+                    <a href="/" id="play">Let's Play!</a>
+                </div>
+                <div>
+                    <a href="/" class="login-register">Login</a>
+                    <a href="/" class="btn login-register">Register</a>
+                    <a href="/" id="user-route">Your profile</a>
+                </div>
+            </div>
+        </nav>
+        <div id="app">
+            <div class="grid">
+                <div class="player1">
+                    <p class="nickname">DAVY JONES</p>
+                    <div class="num-of-dices">Number of Dices: 1</div>
+                    <div class="last-move">
+                        <p>LAST MOVE: </p>
+                    </div>
+                </div>
+                <div class="player2">
+                    <p class="nickname">BILL TURNER</p>
+                    <div class="num-of-dices">Number of Dices: 1</div>
+                    <div class="last-move">
+                        <p>LAST MOVE: </p>
+                    </div>
+                </div>
+                <div class="player3">
+                    <p class="nickname">WILLIAM</p>
+                    <div class="num-of-dices">Number of Dices: 1</div>
+                    <div class="last-move">
+                        <p>LAST MOVE: </p>
+                    </div>
+                </div>
+                <div class="game-logging">
+                    <p class="nickname">GAME LOGGING</p>
+                    <ul>
+                    </ul>
+                </div>
+                <div class="main-player">
+                    <p class="nickname">KAROLLO</p>
+                    <div class="dices">
+                        <div id="dice1" class="dice">?</div>
+                    </div>
+                    <div class="decide">
+                        <button id="roll">ROLL THE DICE !</button>
+                        <button style="visibility: hidden;">CALL HIM A LIAR !</button>
+                    </div>
+                    <div class="statement">
+                        <h3>ROLL THE DICE ! ^</h3>
+                    </div>
+                </div>
+                <div class="staking-table">
+                    <p class="nickname">STAKING - TABLE</p>
+                    <div class="grid-table">
+                        <div class="column-1">
+                            <p class="staking-header">ONE</p>
+                            <button class="staking-btn">ONE</button><br>
+                            <button class="staking-btn">TWO</button><br>
+                            <button class="staking-btn">THREE</button><br>
+                            <button class="staking-btn">FOUR</button><br>
+                            <button class="staking-btn">FIVE</button><br>
+                            <button class="staking-btn">SIX</button>
+                        </div>
+                        <div class="column-2">
+                            <p class="staking-header">TWO</p>
+                            <button class="staking-btn">ONES</button><br>
+                            <button class="staking-btn">TWOS</button><br>
+                            <button class="staking-btn">THREES</button><br>
+                            <button class="staking-btn">FOURS</button><br>
+                            <button class="staking-btn">FIVES</button><br>
+                            <button class="staking-btn">SIXES</button>
+                        </div>
+                        <div class="column-3">
+                            <p class="staking-header">THREE</p>
+                            <button class="staking-btn">ONES</button><br>
+                            <button class="staking-btn">TWOS</button><br>
+                            <button class="staking-btn">THREES</button><br>
+                            <button class="staking-btn">FOURS</button><br>
+                            <button class="staking-btn">FIVES</button><br>
+                            <button class="staking-btn">SIXES</button>
+                        </div>
+                        <div class="column-4">
+                            <p class="staking-header">FOUR</p>
+                            <button class="staking-btn">ONES</button><br>
+                            <button class="staking-btn">TWOS</button><br>
+                            <button class="staking-btn">THREES</button><br>
+                            <button class="staking-btn">FOURS</button><br>
+                            <button class="staking-btn">FIVES</button><br>
+                            <button class="staking-btn">SIXES</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module" src="index.js" defer></script>
+</body>
+</html>
