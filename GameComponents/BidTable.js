@@ -1,6 +1,6 @@
 import * as dictonary from './dictonary.js'
 
-export class StakingTable {
+export class BidTable {
     constructor(table) {
         this.table = table
     };
