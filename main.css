@@ -116,7 +116,7 @@
 }
 
 
-.game-logging {
+.backlog {
     grid-column-start: 10;
     grid-column-end: 13;
     grid-row-start: 1;
@@ -207,17 +207,17 @@
 
 
 /* game logging */
-.game-logging p {
+.backlog p {
     font-weight: bold;
 }
 
 
-.game-logging ul {
+.backlog ul {
     margin-left: 5%;
 }
 
 
-.game-logging li {
+.backlog li {
     font-size: medium;
     margin: 5px;
     text-align: center;
