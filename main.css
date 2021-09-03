@@ -152,6 +152,10 @@
     margin: 1px;
 }
 
+.column {
+    text-align: center;
+}
+
 
 .staking-header {
     text-align: center;

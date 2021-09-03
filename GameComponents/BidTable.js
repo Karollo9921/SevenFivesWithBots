@@ -1,4 +1,4 @@
-import * as dictonary from './dictonary.js'
+import { SINGULAR } from './dictonary.js'
 
 export class BidTable {
     constructor(table) {
@@ -6,8 +6,8 @@ export class BidTable {
     };
 
     addColumn(columnNumber) {
-        this.table.innerHTML += `<div class="column-${columnNumber}">
-                                    <p class="staking-header">${dictonary[columnNumber-1]}</p>
+        this.table.innerHTML += `<div class="column-${columnNumber}" class="column">
+                                    <p class="staking-header">${SINGULAR[columnNumber-1]}</p>
                                     <button class="staking-btn">ONES</button><br>
                                     <button class="staking-btn">TWOS</button><br>
                                     <button class="staking-btn">THREES</button><br>
