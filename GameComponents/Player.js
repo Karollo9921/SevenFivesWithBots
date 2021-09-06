@@ -6,5 +6,6 @@ export class Player {
         this.numOfDices = 1;
         this.dices = ['?'];
         this.lastMove = '';
+        this.inGame = true;
     };
 };

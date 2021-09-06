@@ -16,4 +16,10 @@ export class BidTable {
                                     <button class="staking-btn">SIXES</button>
                                 </div>`
     }
+
+    dropColumns(n) {
+        for (let i = 0; i < n; i++) {
+            Array.from(this.table.children)[Array.from(this.table.children).length-1].remove();
+        }
+    }
 };
