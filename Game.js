@@ -31,10 +31,12 @@ export class Game {
         this.turn += 1;
         this.Statement.setNewStatement(`Now it's ${Player.nickname}'s turn!`);
 
+        // player move and turn > 1
         if (!Player.isBot & this.turn > 1) {
             
             this.handleButtonsVisibility("none", "block", "none", "visible");
 
+            // Bid up the stake
             Array.from(document.getElementsByClassName('staking-btn')).forEach(button => {
                 button.addEventListener('click', (e) => {
                     this.btnCallHimLiar.style.display = 'none';
@@ -58,9 +60,11 @@ export class Game {
                 });
             });
             
+            // call previous player a Liar
             this.btnCallHimLiar.addEventListener('click', (e) => {
                 let dicesfromBidTemp = this.allDicesInTurn().filter((el) => (el) === this.currentBid[0])
                 
+                // previous player is not a Liar
                 if (dicesfromBidTemp.length >= this.currentBid.length) {
 
                     this.playerTurn.numOfDices += 1;
@@ -82,6 +86,8 @@ export class Game {
 
                     this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
                     e.stopImmediatePropagation();
+
+                // previous player is a Liar  
                 } else {
 
                     this.playerPreviousTurn.numOfDices += 1;
@@ -90,6 +96,7 @@ export class Game {
                     this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                     this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is a Liar, " + this.playerPreviousTurn.nickname + " gets extra Dice !");
 
+                    // check if player should end a game
                     if (this.playerPreviousTurn.numOfDices > 5) {
                         this.playerPreviousTurn.inGame = false;
                         this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " lost and end his Game !");
@@ -104,13 +111,14 @@ export class Game {
                     this.playerPreviousTurn = {};
                     this.Statement.setNewStatement(`Round is over, click "OK" to begin next Round`);
                     this.handleButtonsVisibility("none", "none", "block", "hidden");
-                    
+
                     this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
                     e.stopImmediatePropagation();
                 }
             });
         }
 
+        // player's move, first turn, we can only put our Bid
         if (!Player.isBot & this.turn === 1) {
             this.BidTable.table.style.visibility = 'visible';
             Array.from(document.getElementsByClassName('staking-btn')).forEach(button => {
@@ -127,6 +135,7 @@ export class Game {
             });
         }
 
+        // bot's move, first turn, he can only put his Bid
         if (Player.isBot & this.turn === 1) {
             setTimeout(() => {
                 this.Backlog.setNewLog(this.playerTurn.nickname + ": " + SINGULAR[0] + ' ' + PLURAL[this.playerTurn.dices[0] - 1] + " !")
@@ -137,20 +146,25 @@ export class Game {
             }, 1000)
         }
 
+        // bot's move, turn > 1, he can put his Bid or Call previous Player a Liar
         if (Player.isBot & this.turn > 1) {
             setTimeout(() => {
 
+                // if Math.random()*10 > 5 then bot will call previous player a Liar
                 if (Math.random()*10 > 5) {
 
                     let dicesfromBidTemp = this.allDicesInTurn().filter((el) => (el) === this.currentBid[0])
                     this.Backlog.setNewLog(Player.nickname + " calls " + this.playerPreviousTurn.nickname + " a Liar !");
 
+                    // previous player is not a Liar
                     if (dicesfromBidTemp.length >= this.currentBid.length) {
 
                         this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                         this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is not a Liar, " + Player.nickname + " gets extra Dice !");
 
                         Player.numOfDices += 1
+
+                        // check if player should end a game
                         if (Player.numOfDices > 5) {
                             Player.inGame = false;
                             this.Backlog.setNewLog(Player.nickname + " lost and end his Game !");
@@ -161,12 +175,14 @@ export class Game {
                             document.getElementsByClassName("player")[this.players.indexOf(this.playerTurn)-1].children[1].textContent = `Number of Dices: ${Player.numOfDices}`
                         }
 
+                    // previous player is a Liar    
                     } else {
 
                         this.playerPreviousTurn.numOfDices += 1;
                         this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                         this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is a Liar, " + this.playerPreviousTurn.nickname + " gets extra Dice !");
 
+                        // check if player should end a game
                         if (this.playerPreviousTurn.numOfDices > 5) {
                             this.playerPreviousTurn.inGame = false;
                             this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " lost and end his Game !");
@@ -192,7 +208,7 @@ export class Game {
                     this.handleButtonsVisibility("none", "none", "block", "hidden");
                     this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
 
-
+                // if Math.random()*10 < 5 then bot Bid up the Stake
                 } else {
                     let newBid = bidHierarchy[indexOf(bidHierarchy, this.currentBid, arraysIdentical) + 2];
                     this.Backlog.setNewLog(this.playerTurn.nickname + ": " + SINGULAR[newBid.length - 1] + ' ' + PLURAL[newBid[0] - 1] + " !")
