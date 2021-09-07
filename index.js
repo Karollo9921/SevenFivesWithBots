@@ -12,7 +12,7 @@ const game = new Game({
     btnCallHimLiar: document.getElementById('call'),
     btnOK: document.getElementById('ok'),
     players: [
-        new Player('YOU', false), 
+        new Player('KAROLLO', false), 
         new Player('DAVY JONES', true), 
         new Player('BILL TURNER', true), 
         new Player('WILLIAM', true)

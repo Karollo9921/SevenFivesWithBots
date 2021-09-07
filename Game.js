@@ -15,7 +15,7 @@ export class Game {
         this.playerTurn = this.players[Math.ceil(Math.random() * 4) - 1]
         this.playerPreviousTurn = {};
         this.round = 1;
-        this.turn = 1;
+        this.turn = 0;
         this.currentBid = [];
         this.numOfAllDices = this.players.length;
         this.randomizePlayersSlots();
@@ -27,16 +27,16 @@ export class Game {
     };
 
     singleTurn(Player) {
-        console.log("Turn: " + this.turn);
-        console.log(this.currentBid);
+
+        this.turn += 1;
+        this.Statement.setNewStatement(`Now it's ${Player.nickname}'s turn!`);
+
         if (!Player.isBot & this.turn > 1) {
             
-            this.btnRollTheDice.style.display = "none";
-            this.btnCallHimLiar.style.display = "block";
-            this.BidTable.table.style.visibility = 'visible';
+            this.handleButtonsVisibility("none", "block", "none", "visible");
+
             Array.from(document.getElementsByClassName('staking-btn')).forEach(button => {
                 button.addEventListener('click', (e) => {
-                    e.preventDefault();
                     this.btnCallHimLiar.style.display = 'none';
                     
                     let positionOfCurrentBid = indexOf(bidHierarchy, this.currentBid, arraysIdentical);
@@ -44,10 +44,8 @@ export class Game {
 
                     if (positionOfCurrentBid < positionOfPlayerBid) {
                         this.Backlog.setNewLog(this.playerTurn.nickname + ": " + e.target.parentElement.children[0].textContent + ' ' + e.target.textContent + " !")
-                        this.turn = this.turn + 1;
                         this.playerPreviousTurn = this.playerTurn;
                         this.playerTurn = this.playersInGame()[(this.playersInGame().indexOf(this.playerTurn) + 1) % (this.playersInGame().length)];
-                        this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
                         this.currentBid = convertBidToArray(e.target.parentElement.children[0].textContent, e.target.textContent);
                         this.BidTable.table.style.visibility = 'hidden';
                         this.singleTurn(this.playerTurn);
@@ -64,14 +62,16 @@ export class Game {
                 let dicesfromBidTemp = this.allDicesInTurn().filter((el) => (el) === this.currentBid[0])
                 
                 if (dicesfromBidTemp.length >= this.currentBid.length) {
+
                     this.playerTurn.numOfDices += 1;
+
                     this.Backlog.setNewLog(this.playerTurn.nickname + " calls " + this.playerPreviousTurn.nickname + " a Liar !");
                     this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                     this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is not a Liar, " + this.playerTurn.nickname + " gets extra Dice !");
+
                     this.Statement.setNewStatement(`Round is over, click "OK" to begin next Round`);
-                    this.btnCallHimLiar.style.display = "none";
-                    this.btnOK.style.display = "block";
-                    this.BidTable.table.style.visibility = 'hidden';
+                    this.handleButtonsVisibility("none", "none", "block", "hidden");
+
                     if (this.playerTurn.numOfDices > 5) {
                         this.playerTurn.inGame = false;
                         this.Backlog.setNewLog(this.playerTurn.nickname + " lost and end his Game !");
@@ -79,13 +79,17 @@ export class Game {
                     } else {
                         document.getElementsByClassName('dices')[0].innerHTML += `<div class="dice">?</div>`
                     }
+
                     this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
                     e.stopImmediatePropagation();
                 } else {
+
                     this.playerPreviousTurn.numOfDices += 1;
+
                     this.Backlog.setNewLog(this.playerTurn.nickname + " calls " + this.playerPreviousTurn.nickname + " a Liar !");
                     this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                     this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is a Liar, " + this.playerPreviousTurn.nickname + " gets extra Dice !");
+
                     if (this.playerPreviousTurn.numOfDices > 5) {
                         this.playerPreviousTurn.inGame = false;
                         this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " lost and end his Game !");
@@ -96,16 +100,15 @@ export class Game {
                         document.getElementsByClassName("player")[this.players.indexOf(this.playerPreviousTurn)-1].children[1].textContent = `Number of Dices: ${this.playerPreviousTurn.numOfDices}`
                         this.playerTurn = this.playerPreviousTurn;
                     }
+
                     this.playerPreviousTurn = {};
                     this.Statement.setNewStatement(`Round is over, click "OK" to begin next Round`);
-                    this.btnCallHimLiar.style.display = "none";
-                    this.btnOK.style.display = "block";
-                    this.BidTable.table.style.visibility = 'hidden';
+                    this.handleButtonsVisibility("none", "none", "block", "hidden");
+                    
                     this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
                     e.stopImmediatePropagation();
                 }
             });
-
         }
 
         if (!Player.isBot & this.turn === 1) {
@@ -115,10 +118,8 @@ export class Game {
                     let singularPartOfBid = e.target.parentElement.children[0].textContent;
                     let pluralPartOfBid = e.target.textContent;
                     this.Backlog.setNewLog(Player.nickname + ": " + singularPartOfBid + ' ' + pluralPartOfBid + " !")
-                    this.turn = this.turn + 1;
                     this.playerPreviousTurn = Player;
                     this.playerTurn = this.playersInGame()[(this.playersInGame().indexOf(Player) + 1) % (this.playersInGame().length)];
-                    this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
                     this.currentBid = convertBidToArray(singularPartOfBid, pluralPartOfBid);
                     this.BidTable.table.style.visibility = 'hidden';
                     this.singleTurn(this.playerTurn);
@@ -127,27 +128,28 @@ export class Game {
         }
 
         if (Player.isBot & this.turn === 1) {
-            this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
             setTimeout(() => {
                 this.Backlog.setNewLog(this.playerTurn.nickname + ": " + SINGULAR[0] + ' ' + PLURAL[this.playerTurn.dices[0] - 1] + " !")
                 this.currentBid = convertBidToArray(SINGULAR[0], PLURAL[this.playerTurn.dices[0] - 1]);
-                this.turn = this.turn + 1;
                 this.playerPreviousTurn = this.playerTurn;
                 this.playerTurn = this.playersInGame()[(this.playersInGame().indexOf(this.playerTurn) + 1) % (this.playersInGame().length)];
-                this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
                 this.singleTurn(this.playerTurn);
             }, 1000)
         }
 
         if (Player.isBot & this.turn > 1) {
-            this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
             setTimeout(() => {
+
                 if (Math.random()*10 > 5) {
+
                     let dicesfromBidTemp = this.allDicesInTurn().filter((el) => (el) === this.currentBid[0])
                     this.Backlog.setNewLog(Player.nickname + " calls " + this.playerPreviousTurn.nickname + " a Liar !");
+
                     if (dicesfromBidTemp.length >= this.currentBid.length) {
+
                         this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                         this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is not a Liar, " + Player.nickname + " gets extra Dice !");
+
                         Player.numOfDices += 1
                         if (Player.numOfDices > 5) {
                             Player.inGame = false;
@@ -158,23 +160,24 @@ export class Game {
                         } else {
                             document.getElementsByClassName("player")[this.players.indexOf(this.playerTurn)-1].children[1].textContent = `Number of Dices: ${Player.numOfDices}`
                         }
-                        this.Statement.setNewStatement(`Round is over, click "OK" to begin next Round`);
-                        this.btnCallHimLiar.style.display = "none";
-                        this.btnOK.style.display = "block";
-                        this.BidTable.table.style.visibility = 'hidden';
-                        this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
+
                     } else {
+
                         this.playerPreviousTurn.numOfDices += 1;
                         this.Backlog.setNewLog("All Dices: " + this.allDicesInTurn().sort());
                         this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " is a Liar, " + this.playerPreviousTurn.nickname + " gets extra Dice !");
+
                         if (this.playerPreviousTurn.numOfDices > 5) {
                             this.playerPreviousTurn.inGame = false;
                             this.Backlog.setNewLog(this.playerPreviousTurn.nickname + " lost and end his Game !");
+
                             if (this.playerPreviousTurn.isBot) {
                                 document.getElementsByClassName("player")[this.players.indexOf(this.playerPreviousTurn)-1].children[0].style.color = "Red"
                                 document.getElementsByClassName("player")[this.players.indexOf(this.playerPreviousTurn)-1].children[1].textContent = "Out of the Game"
                             } 
+
                         } else {
+
                             this.playerTurn = this.playerPreviousTurn
                             if (this.playerPreviousTurn.isBot) {
                                 document.getElementsByClassName("player")[this.players.indexOf(this.playerPreviousTurn)-1].children[1].textContent = `Number of Dices: ${this.playerPreviousTurn.numOfDices}`
@@ -183,19 +186,18 @@ export class Game {
                             }
                         }
                         this.playerPreviousTurn = {};
-                        this.Statement.setNewStatement(`Round is over, click "OK" to begin next Round`);
-                        this.btnCallHimLiar.style.display = "none";
-                        this.btnOK.style.display = "block";
-                        this.BidTable.table.style.visibility = 'hidden';
-                        this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
                     }
+
+                    this.Statement.setNewStatement(`Round is over, click "OK" to begin next Round`);
+                    this.handleButtonsVisibility("none", "none", "block", "hidden");
+                    this.btnOK.addEventListener('click', (e) => this.letsEndTheRound(e));
+
+
                 } else {
                     let newBid = bidHierarchy[indexOf(bidHierarchy, this.currentBid, arraysIdentical) + 2];
                     this.Backlog.setNewLog(this.playerTurn.nickname + ": " + SINGULAR[newBid.length - 1] + ' ' + PLURAL[newBid[0] - 1] + " !")
-                    this.turn = this.turn + 1;
                     this.playerPreviousTurn = this.playerTurn;
                     this.playerTurn = this.playersInGame()[(this.playersInGame().indexOf(this.playerTurn) + 1) % this.playersInGame().length];
-                    this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
                     this.currentBid = newBid;
                     this.singleTurn(this.playerTurn);
                 }
@@ -205,8 +207,7 @@ export class Game {
 
     letsBeginTheRound(e) {
         this.currentBid = [];
-        this.turn = 1;
-        this.Statement.setNewStatement(`Now it's ${this.playerTurn.nickname}'s turn!`);
+        this.turn = 0;
         this.Backlog.clearBacklog();
         this.Backlog.setNewLog(`It's Round ${this.round}, we have ${this.allDicesInTurn().length} dices in this Round !`);
         this.singleTurn(this.playerTurn);
@@ -214,11 +215,9 @@ export class Game {
     };
 
     letsEndTheRound(e) {
-        // e.preventDefault();
-        this.turn = 1;
+        this.turn = 0;
         this.round += 1;
-        console.log(this.BidTable.table.children.length);
-        console.log(this.allDicesInTurn().length);
+
         if (this.allDicesInTurn().length >= this.BidTable.table.children.length) {
             this.numOfAllDices = this.allDicesInTurn().length + 1;
             this.BidTable.addColumn(this.numOfAllDices);
@@ -227,21 +226,26 @@ export class Game {
             this.BidTable.dropColumns(5);
             this.BidTable.table.style.gridTemplateColumns = `repeat(${this.BidTable.table.children.length}, 1fr)`;  
         }
+
         this.btnOK.style.display = "none";
         this.btnRollTheDice.style.display = "block";
+
         this.Backlog.clearBacklog();
+
         Array.from(document.getElementsByClassName("dice")).forEach((d) => {
             d.textContent = "?";
         });
-        // e.stopPropation();
+
         if (this.playersInGame().length < 2) {
             this.Backlog.setNewLog(`Game is Over! The Winner is: ${this.playersInGame()[0].nickname}`)
+            this.Backlog.setNewLog("Refresh a page and play again !")
             this.Statement.setNewStatement(`Game is Over! The Winner is: ${this.playersInGame()[0].nickname}`);
             this.btnRollTheDice.style.display = "none";
         } else {
             this.Statement.setNewStatement("ROLL THE DICE ! ^");
             this.btnRollTheDice.addEventListener('click', (e) => this.rollTheDice(e));
         }
+
         e.stopImmediatePropagation();
     };
 
@@ -270,8 +274,11 @@ export class Game {
         });
         
         this.renderDices(this.getMainPlayer());
+
         this.btnRollTheDice.style.display = "none";
+
         this.letsBeginTheRound(e);
+
         e.stopImmediatePropagation();
     };
 
@@ -293,6 +300,14 @@ export class Game {
 
         return allDices;
     }
+
+    handleButtonsVisibility(rollTheDice, callHimLiar, ok, bidTable) {
+        this.btnRollTheDice.style.display = rollTheDice;
+        this.btnCallHimLiar.style.display = callHimLiar;
+        this.btnOK.style.display = ok;
+        this.BidTable.table.style.visibility = bidTable;
+    };
+
 };
 
 
